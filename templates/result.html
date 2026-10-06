@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}SpeechNote | Transcript{% endblock %}
+{% block content %}
+<section class="hero compact">
+  <p class="eyebrow">TRANSCRIPTION RESULT</p>
+  <h1>Transcript ready.</h1>
+  <p class="sub">Language: {{ language }}</p>
+</section>
+
+<section class="result-grid">
+  <div class="card transcript-card">
+    <div class="section-head">
+      <h2>Transcript</h2>
+      <span class="badge">{{ stats.words }} words</span>
+    </div>
+    <div class="transcript">{{ text }}</div>
+    <div class="actions">
+      <button type="button" onclick="navigator.clipboard.writeText(document.querySelector('.transcript').innerText)">Copy Text</button>
+      <form method="post" action="{{ url_for('download') }}">
+        <input type="hidden" name="text" value="{{ text }}">
+        <button type="submit">Download .txt</button>
+      </form>
+      <a class="secondary" href="{{ url_for('index') }}">New Transcript</a>
+    </div>
+  </div>
+
+  <aside class="card">
+    <h2>Transcript details</h2>
+    <div class="stat"><span>Words</span><strong>{{ stats.words }}</strong></div>
+    <div class="stat"><span>Sentences</span><strong>{{ stats.sentences }}</strong></div>
+    <div class="stat"><span>Characters</span><strong>{{ stats.characters }}</strong></div>
+    <hr>
+    <h3>Frequent keywords</h3>
+    {% if keywords %}
+      <div class="keywords">
+        {% for keyword in keywords %}<span>{{ keyword }}</span>{% endfor %}
+      </div>
+    {% else %}
+      <p class="muted">No keywords found.</p>
+    {% endif %}
+  </aside>
+</section>
+{% endblock %}

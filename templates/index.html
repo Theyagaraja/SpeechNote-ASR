@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}SpeechNote | ASR Tool{% endblock %}
+{% block content %}
+<section class="hero">
+  <p class="eyebrow">AUTOMATIC SPEECH RECOGNITION</p>
+  <h1>Turn spoken words into a usable transcript.</h1>
+  <p class="sub">Record from your microphone or upload an audio file. SpeechNote converts the speech into text and provides basic transcript analysis.</p>
+</section>
+
+<section class="grid">
+  <div class="card">
+    <h2>Record from microphone</h2>
+    <p class="muted">Use the default microphone connected to this computer.</p>
+    <form method="post" action="{{ url_for('record') }}">
+      <label>Language</label>
+      <select name="language">
+        {% for code, name in languages.items() %}
+          <option value="{{ code }}">{{ name }}</option>
+        {% endfor %}
+      </select>
+      <label>Duration (seconds)</label>
+      <input type="number" name="duration" value="10" min="1" max="120">
+      <button type="submit">Start Recording</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>Upload audio</h2>
+    <p class="muted">Supported: WAV, AIFF and FLAC. Maximum size: 20 MB.</p>
+    <form method="post" action="{{ url_for('transcribe_upload') }}" enctype="multipart/form-data">
+      <label>Language</label>
+      <select name="language">
+        {% for code, name in languages.items() %}
+          <option value="{{ code }}">{{ name }}</option>
+        {% endfor %}
+      </select>
+      <label>Audio file</label>
+      <input type="file" name="audio" accept=".wav,.aiff,.aif,.flac" required>
+      <button type="submit">Transcribe Audio</button>
+    </form>
+  </div>
+</section>
+
+<section class="card workflow">
+  <h2>Processing flow</h2>
+  <div class="steps">
+    <span>01 Input audio</span><span>02 Capture / upload</span>
+    <span>03 Speech recognition</span><span>04 Text processing</span>
+    <span>05 Transcript output</span>
+  </div>
+</section>
+{% endblock %}
